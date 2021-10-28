@@ -1,4 +1,5 @@
 import React from 'react';
+import Menu from './Menu';
 import './App.css';
 
 import { Grommet, Box, Grid, Text } from 'grommet';
@@ -26,7 +27,7 @@ const App: React.FC<React.PropsWithChildren<{}>> = ({children}) => {
             background="dark-2"
           >
             <img src="https://s.giantswarm.io/brand/1/logo-white.svg" alt="Giant Swarm" id="top-logo"/>
-            <Text>Menu placeholder</Text>
+            <Menu endpointCount={3} />
           </Box>
           <Box gridArea="main" justify="center" align="center">
             { children }
