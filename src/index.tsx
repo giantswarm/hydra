@@ -10,12 +10,12 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App>
-      <Router>
+    <Router>
+      <App>
         <Route path="/" exact component={Home} />
         <Route path="/settings/" exact component={Settings} />
-      </Router>
-    </App>
+      </App>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
