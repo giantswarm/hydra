@@ -1,6 +1,7 @@
 import React from 'react';
 import Menu from './Menu';
 import './App.css';
+import { AnchorLink } from './AnchorLink';
 
 import { Grommet, Box, Grid, Text } from 'grommet';
 import { grommet } from 'grommet/themes';
@@ -26,7 +27,9 @@ const App: React.FC<React.PropsWithChildren<{}>> = ({children}) => {
             pad={{ horizontal: 'medium', vertical: 'small' }}
             background="dark-2"
           >
-            <img src="https://s.giantswarm.io/brand/1/logo-white.svg" alt="Giant Swarm" id="top-logo"/>
+            <AnchorLink to="/">
+              <img src="https://s.giantswarm.io/brand/1/logo-white.svg" alt="Giant Swarm" id="top-logo"/>
+            </AnchorLink>
             <Menu endpointCount={3} />
           </Box>
           <Box gridArea="main" justify="center" align="center">
