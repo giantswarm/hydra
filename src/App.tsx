@@ -4,7 +4,7 @@ import './App.css';
 import { Grommet, Box, Grid, Text } from 'grommet';
 import { grommet } from 'grommet/themes';
 
-function App() {
+const App: React.FC<React.PropsWithChildren<{}>> = ({children}) => {
   return (
     <Grommet full theme={grommet}>
       {Grid.available ? (
@@ -29,7 +29,7 @@ function App() {
             <Text>Menu placeholder</Text>
           </Box>
           <Box gridArea="main" justify="center" align="center">
-            <Text>main</Text>
+            { children }
           </Box>
         </Grid>
       ) : (
