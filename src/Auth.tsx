@@ -1,19 +1,31 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Auth from './auth/auth';
-import { User } from 'oidc-client';
+
+const testURL = 'https://api.g8s.ghost.westeurope.azure.gigantic.io';
+
+const getDexURLFromMapiURL = (mapiEndpoint: string) => {
+  return mapiEndpoint.replace('://api.', '://dex.');
+};
+
+const createNewAuth = async (mapiEndpoint: string) => {
+  const dexURL = getDexURLFromMapiURL(mapiEndpoint);
+  const auth = new Auth(dexURL);
+  await auth.signIn();
+};
 
 function AuthComponent() {
   const [mapiURL, setMapiURL] = useState('');
 
-  const successCallback = (user: User) => {console.log('HELLO', user)}
-
-  const handleSubmit = (e: React.FormEvent) => {
-    const auth = new Auth(mapiURL);
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    auth?.signIn();
-    auth.handleSignIn(successCallback)
+    await createNewAuth(testURL);
   };
+
+  useEffect(() => {
+    const dexURL = getDexURLFromMapiURL(testURL);
+    const user = new Auth(dexURL);
+    user.signinRedirectCallback();
+  });
 
   return (
     <>

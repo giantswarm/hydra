@@ -1,5 +1,9 @@
 import { createIdentityConfig } from './authConfig';
+<<<<<<< Updated upstream
 import { UserManager, WebStorageStateStore } from 'oidc-client';
+=======
+import { Log, UserManager, WebStorageStateStore } from 'oidc-client';
+>>>>>>> Stashed changes
 
 export default class Auth {
   protected user: UserManager;
@@ -14,16 +18,23 @@ export default class Auth {
       ...identityConfig,
       userStore,
     });
+
+    Log.logger = console;
+    Log.level = Log.DEBUG;
   }
 
-  public signIn() {
-    return this.user.signinRedirect({});
+  public async signinRedirectCallback() {
+    try {
+      const user = await this.user.signinRedirectCallback();
+      window.location.href = 'http://localhost:7000';
+      return user;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  public handleSignIn(successCallback: Function) {
-    this.user.signinRedirectCallback('http://localhost:7000')
-    .then((user) => successCallback(user))
-    .catch((err) => console.error(err))
+  public async signIn() {
+    await this.user.signinRedirect();
   }
 
   public async getUser() {

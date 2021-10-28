@@ -7,7 +7,7 @@ import Home from './Home';
 import Settings from './Settings';
 import reportWebVitals from './reportWebVitals';
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
