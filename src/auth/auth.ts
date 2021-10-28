@@ -1,5 +1,5 @@
 import { createIdentityConfig } from './authConfig';
-import { User, UserManager, WebStorageStateStore } from 'oidc-client';
+import { UserManager, WebStorageStateStore } from 'oidc-client';
 
 export default class Auth {
   protected user: UserManager;
@@ -20,8 +20,10 @@ export default class Auth {
     return this.user.signinRedirect({});
   }
 
-  public handleSignIn(suceessCallback: (user: User) => void) {
-    this.user.signinRedirectCallback('http://localhost:7000').then((user) => suceessCallback(user)).catch((err) => console.error(err))
+  public handleSignIn(successCallback: Function) {
+    this.user.signinRedirectCallback('http://localhost:7000')
+    .then((user) => successCallback(user))
+    .catch((err) => console.error(err))
   }
 
   public async getUser() {

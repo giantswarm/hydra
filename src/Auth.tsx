@@ -5,7 +5,7 @@ import { User } from 'oidc-client';
 function AuthComponent() {
   const [mapiURL, setMapiURL] = useState('');
 
-const successCallback = (user: User) => {console.log('HELLO', user)}
+  const successCallback = (user: User) => {console.log('HELLO', user)}
 
   const handleSubmit = (e: React.FormEvent) => {
     const auth = new Auth(mapiURL);
