@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Button, Nav, Paragraph } from 'grommet';
+import { Nav, Paragraph } from 'grommet';
 import { UserSettings } from 'grommet-icons';
+import { AnchorLink } from './AnchorLink';
 
 type MenuProps = {
     endpointCount: number;
@@ -10,8 +11,8 @@ type MenuProps = {
 function Menu({ endpointCount }: MenuProps) {
     return (
         <Nav direction="row" pad="medium">
-            <Paragraph margin={{vertical: 'xsmall'}}>{ endpointCount } Endpoints</Paragraph>
-            <Button icon={<UserSettings/>} label="Settings" />
+            <Paragraph margin="none">{ endpointCount } Endpoints</Paragraph>
+            <AnchorLink to="/settings/" icon={<UserSettings/>} label="Settings" />
         </Nav>
     );
 }
