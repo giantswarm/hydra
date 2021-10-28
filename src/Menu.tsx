@@ -1,5 +1,4 @@
 import React from 'react';
-//import './Menu.css';
 
 import { Button, Nav, Paragraph } from 'grommet';
 import { UserSettings } from 'grommet-icons';
