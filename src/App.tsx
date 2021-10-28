@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 
-import { Grommet, Box, Button, Grid, Text } from 'grommet';
+import { Grommet, Box, Grid, Text } from 'grommet';
 import { grommet } from 'grommet/themes';
 
 function App() {
-  const [sidebar, setSidebar] = useState(true);
-
   return (
     <Grommet full theme={grommet}>
       {Grid.available ? (
@@ -16,7 +14,6 @@ function App() {
           columns={['auto', 'flex']}
           areas={[
             { name: 'header', start: [0, 0], end: [1, 0] },
-            { name: 'sidebar', start: [0, 1], end: [0, 1] },
             { name: 'main', start: [1, 1], end: [1, 1] },
           ]}
         >
@@ -28,30 +25,9 @@ function App() {
             pad={{ horizontal: 'medium', vertical: 'small' }}
             background="dark-2"
           >
-            <Button onClick={() => setSidebar(!sidebar)}>
-              <img src="https://s.giantswarm.io/brand/1/logo-white.svg" alt="Giant Swarm" id="top-logo"/>
-            </Button>
+            <img src="https://s.giantswarm.io/brand/1/logo-white.svg" alt="Giant Swarm" id="top-logo"/>
             <Text>Menu placeholder</Text>
           </Box>
-          {sidebar && (
-            <Box
-              gridArea="sidebar"
-              background="dark-3"
-              width="small"
-              animation={[
-                { type: 'fadeIn', duration: 300 },
-                { type: 'slideRight', size: 'xlarge', duration: 150 },
-              ]}
-            >
-              {['First', 'Second', 'Third'].map((name) => (
-                <Button key={name} href="#" hoverIndicator>
-                  <Box pad={{ horizontal: 'medium', vertical: 'small' }}>
-                    <Text>{name}</Text>
-                  </Box>
-                </Button>
-              ))}
-            </Box>
-          )}
           <Box gridArea="main" justify="center" align="center">
             <Text>main</Text>
           </Box>
