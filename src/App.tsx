@@ -29,7 +29,7 @@ function App() {
             background="dark-2"
           >
             <Button onClick={() => setSidebar(!sidebar)}>
-              <Text size="large">Title placeholder</Text>
+              <img src="https://s.giantswarm.io/brand/1/logo-white.svg" alt="Giant Swarm" id="top-logo"/>
             </Button>
             <Text>Menu placeholder</Text>
           </Box>
