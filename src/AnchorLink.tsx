@@ -8,7 +8,11 @@ import { Link, LinkProps } from "react-router-dom";
 import React from "react";
 
 export const AnchorLink: React.FC<AnchorLinkProps> = (props) => {
-  return <Anchor as={Link} {...props} />;
+  return <Anchor
+    as={({ colorProp, hasIcon, hasLabel, focus, ...props }) => <Link {...props} />}
+    {...props} />;
 };
 
-export type AnchorLinkProps = LinkProps & AnchorExtendedProps;
+export type AnchorLinkProps = LinkProps &
+  AnchorExtendedProps &
+  Omit<JSX.IntrinsicElements['a'], 'color'>
