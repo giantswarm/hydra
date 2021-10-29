@@ -1,5 +1,5 @@
 import { createIdentityConfig } from './authConfig';
-import { Log, UserManager, WebStorageStateStore } from 'oidc-client';
+import { Log, User, UserManager, WebStorageStateStore } from 'oidc-client';
 
 export default class Auth {
   protected user: UserManager;
@@ -19,14 +19,15 @@ export default class Auth {
     Log.level = Log.DEBUG;
   }
 
-  public async signinRedirectCallback() {
-    try {
-      const user = await this.user.signinRedirectCallback();
-      window.location.href = 'http://localhost:7000';
-      return user;
-    } catch (err) {
+  public handleSignIn(successCallback: (user: User) => void) {
+    console.debug('auth.handleSignIn called');
+    this.user.signinRedirectCallback(window.location.href).then(function(user) {
+      console.log('signin success callback done. user:', user);
+      successCallback(user);
+    }).catch(function(err) {
+      console.log('Error in signin callback')
       console.error(err);
-    }
+    });
   }
 
   public async signIn() {

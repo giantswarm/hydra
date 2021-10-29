@@ -1,33 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Auth from './auth/auth';
+import { User } from 'oidc-client';
 
 import { Box, Button, Form, TextInput } from 'grommet';
 
-const testURL = 'https://g8s.ghost.westeurope.azure.gigantic.io';
+const dexURL = 'https://dex.g8s.ghost.westeurope.azure.gigantic.io';
 
-const getDexURLFromMapiURL = (mapiEndpoint: string) => {
-  return mapiEndpoint.replace('://g8s.', '://dex.g8s.');
+const successCallback = (user: User) => {
+  console.log('HELLO', user)
+
+  // Avoid further auth redirects
+  window.location.href = window.location.protocol + "//" + window.location.host + "/";
 };
 
-const createNewAuth = async (mapiEndpoint: string) => {
-  const dexURL = getDexURLFromMapiURL(mapiEndpoint);
+const handleAuthFlow = () => {
   const auth = new Auth(dexURL);
-  await auth.signIn();
-};
+  auth?.signIn();
+  auth.handleSignIn(successCallback);
+}
+
+let queryParams = new URLSearchParams(window.location.search);
+if (queryParams.get('code')) {
+  handleAuthFlow();
+}
 
 function AuthComponent() {
-  const [mapiURL, setMapiURL] = useState(testURL);
+  const [mapiURL, setMapiURL] = useState(dexURL);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createNewAuth(testURL);
+    handleAuthFlow();
   };
-
-  useEffect(() => {
-    const dexURL = getDexURLFromMapiURL(testURL);
-    const user = new Auth(dexURL);
-    user.signinRedirectCallback();
-  });
 
   return (
     <>
