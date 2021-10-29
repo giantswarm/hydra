@@ -14,7 +14,7 @@ ReactDOM.render(
     <Router>
       <App>
         <Route path="/" exact component={Home} />
-        <Route path="/auth" exact component={Auth} />
+        <Route path="/auth/" exact component={Auth} />
         <Route path="/settings/" exact component={Settings} />
       </App>
     </Router>
