@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Hydra - One web UI to rule them all
+
+Hydra is a PoC (proof of concept) attempt to deal with several Giant Swarm Management API endpoints from a single web application. All state is handled in the client, which lives in the user's browser.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
