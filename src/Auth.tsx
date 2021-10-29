@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Auth from './auth/auth';
 
-const testURL = 'https://api.g8s.ghost.westeurope.azure.gigantic.io';
+const testURL = 'https://g8s.ghost.westeurope.azure.gigantic.io';
 
 const getDexURLFromMapiURL = (mapiEndpoint: string) => {
-  return mapiEndpoint.replace('://api.', '://dex.');
+  return mapiEndpoint.replace('://g8s.', '://dex.g8s.');
 };
 
 const createNewAuth = async (mapiEndpoint: string) => {
