@@ -1,38 +1,55 @@
 import React from 'react';
 import { decode } from 'js-base64';
+import EndpointManager from './auth/endpointManager';
 
 import { Box, Button, Layer, Main, Heading, DataTable, Text } from 'grommet';
 import { CircleInformation } from 'grommet-icons';
 
-const decodeJWT = (encoded: string) => {
+/**
+ * Decode the payload of a JWT
+ *
+ * @param encoded Encoded JWT
+ * @returns Payload as object
+ */
+const decodeJWT = (encoded: string): any => {
   const parts = encoded.split('.');
-  //const header = decode(parts[0]);
   const payload = decode(parts[1]);
-  const payloadData = JSON.parse(payload);
-  const payloadFriendly = JSON.stringify(payloadData, null, " ");
-  return payloadFriendly;
+  return JSON.parse(payload);
 }
 
-function Settings() {
+type SettingsProps = {
+  endpointManager: EndpointManager;
+}
+
+function Settings({ endpointManager }: SettingsProps) {
   const [show, setShow] = React.useState<boolean>();
 
-  // Get all localStorage items with key 'oidc.user:*'
-  const keys = Object.keys(localStorage);
-  let numKeys = keys.length;
-  const endpoints = [];
+  const endpoints = Object.values(endpointManager.getEndpoints());
 
-  while (numKeys--) {
-    if (keys[numKeys].startsWith('oidc.user:')) {
-      const keyParts = keys[numKeys].split(':');
-      const item = localStorage.getItem(keys[numKeys]);
-      if (item) {
-        const itemData = JSON.parse(item);
-        itemData['issuer'] = keyParts[1] + ':' + keyParts[2];
-        itemData['client_id'] = keyParts[3]
-        endpoints.push(itemData);
-      }
+  const tableData = [];
+
+  for (let endpoint of endpoints) {
+    let item = {
+      baseDomain: endpoint.baseDomain,
+      issuer: endpoint.issuerURL,
+      userName: '',
+      userEmail: '',
+      expires: 0,
+      idToken: null,
     }
+
+    const idToken = endpointManager.getIDToken(endpoint.baseDomain);
+    if (idToken) {
+      const payload = decodeJWT(idToken);
+      item.userName = payload.name;
+      item.userEmail = payload.email;
+      item.expires = payload.exp;
+      item.idToken = payload;
+    }
+
+    tableData.push(item);
   }
+
 
   return (
     <Main pad="large">
@@ -43,27 +60,27 @@ function Settings() {
       <DataTable
         columns={[
           {
-            property: 'issuer',
-            header: <Text>Endpoint URL</Text>,
+            property: 'baseDomain',
+            header: <Text>Base domain</Text>,
             primary: false,
           },
           {
-            property: 'profile.name',
+            property: 'userName',
             header: <Text>User name</Text>,
-            render: datum => (datum.profile.name),
+            render: datum => (datum.userName),
           },
           {
-            property: 'profile.email',
-            header: <Text>User email</Text>,
-            render: datum => (datum.profile.email),
+            property: 'userEmail',
+            header: <Text>Email</Text>,
+            render: datum => (datum.userEmail),
           },
           {
-            property: 'expires_at',
+            property: 'expires',
             header: <Text>Status</Text>,
             primary: false,
             render: datum => {
               const now = Date.now() / 1000;
-              const delta = datum.expires_at - now;
+              const delta = datum.expires - now;
               if (delta > 0) {
                 return <Text>ID token active</Text>;
               }
@@ -75,6 +92,8 @@ function Settings() {
             header: <Text />,
             primary: false,
             render: datum => {
+              const tokenString = JSON.stringify(datum.idToken, null, " ");
+
               return (
                 <>
                   <Button plain label={<CircleInformation/>} onClick={() => setShow(true)} />
@@ -87,7 +106,7 @@ function Settings() {
                     >
                       <Box direction="column" pad="medium" gap="small">
                         <pre>
-                        {decodeJWT(datum.id_token)}
+                        {tokenString}
                         </pre>
                         <Button label="Close" onClick={() => setShow(false)} />
                       </Box>
@@ -98,7 +117,7 @@ function Settings() {
             },
           }
         ]}
-        data={endpoints} />
+        data={tableData} />
     </Main>
   );
 }
