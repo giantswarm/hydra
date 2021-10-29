@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Auth from './auth/auth';
 
-import { Box, Button, TextInput } from 'grommet';
+import { Box, Button, Form, TextInput } from 'grommet';
 
 const testURL = 'https://g8s.ghost.westeurope.azure.gigantic.io';
 
@@ -31,7 +31,7 @@ function AuthComponent() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <p>
           Please configure at least one Giant Swarm Management API endpoint to
           work with. (Enter the dex URL for now)
@@ -42,9 +42,9 @@ function AuthComponent() {
             value={mapiURL}
             onChange={event => setMapiURL(event.target.value)}
             />
-          <Button primary label="Add" />
+          <Button type="submit" primary label="Add" />
         </Box>
-      </form>
+      </Form>
     </>
   );
 }
