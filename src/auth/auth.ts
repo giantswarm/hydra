@@ -1,9 +1,5 @@
 import { createIdentityConfig } from './authConfig';
-<<<<<<< Updated upstream
-import { UserManager, WebStorageStateStore } from 'oidc-client';
-=======
 import { Log, UserManager, WebStorageStateStore } from 'oidc-client';
->>>>>>> Stashed changes
 
 export default class Auth {
   protected user: UserManager;
