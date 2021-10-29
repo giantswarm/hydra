@@ -16,7 +16,7 @@ export default class Auth {
     });
 
     Log.logger = console;
-    Log.level = Log.DEBUG;
+    Log.level = Log.INFO;
   }
 
   public handleSignIn(successCallback: (user: User) => void) {

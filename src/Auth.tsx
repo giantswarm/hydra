@@ -4,7 +4,7 @@ import { User } from 'oidc-client';
 
 import { Box, Button, Form, TextInput } from 'grommet';
 
-const dexURL = 'https://dex.g8s.ghost.westeurope.azure.gigantic.io';
+const defaultDexURL = 'https://dex.g8s.ghost.westeurope.azure.gigantic.io';
 
 const successCallback = (user: User) => {
   console.log('HELLO', user)
@@ -13,23 +13,33 @@ const successCallback = (user: User) => {
   window.location.href = window.location.protocol + "//" + window.location.host + "/";
 };
 
-const handleAuthFlow = () => {
-  const auth = new Auth(dexURL);
+const handleAuthFlow = (dexUrl: string) => {
+  const auth = new Auth(dexUrl);
   auth?.signIn();
   auth.handleSignIn(successCallback);
 }
 
 let queryParams = new URLSearchParams(window.location.search);
 if (queryParams.get('code')) {
-  handleAuthFlow();
+  // Get our dex URL from storage
+  const state = queryParams.get('state');
+  const storageKey = `oidc.${state}`;
+  const jsonString = localStorage.getItem(storageKey);
+  if (jsonString) {
+    const data = JSON.parse(jsonString);
+    const dexURL = data['authority'];
+    handleAuthFlow(dexURL);
+  } else {
+    console.error(`Could not decode a JSON string from localStorage key ${storageKey}`);
+  }
 }
 
 function AuthComponent() {
-  const [mapiURL, setMapiURL] = useState(dexURL);
+  const [dexURL, setDexURL] = useState(defaultDexURL);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    handleAuthFlow();
+    handleAuthFlow(dexURL);
   };
 
   return (
@@ -42,8 +52,8 @@ function AuthComponent() {
         <Box direction="row" gap="small">
           <TextInput
             placeholder="Enter Management API URL"
-            value={mapiURL}
-            onChange={event => setMapiURL(event.target.value)}
+            value={dexURL}
+            onChange={event => setDexURL(event.target.value)}
             />
           <Button type="submit" primary label="Add" />
         </Box>
