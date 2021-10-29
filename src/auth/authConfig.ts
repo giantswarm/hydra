@@ -15,7 +15,7 @@ export const createIdentityConfig = (dexURL: string) => {
     response_mode: 'query',
     prompt: 'none',
     scope:
-      'openid offline_access profile email groups',
+      'openid offline_access profile email groups audience:server:client_id:dex-k8s-authenticator',
     metadata: {
       issuer: dexURL,
       jwks_uri: dexURL + '/keys', // also getting all of this from happa
