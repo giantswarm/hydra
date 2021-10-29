@@ -1,7 +1,20 @@
 import React from 'react';
+import { decode } from 'js-base64';
 
-import { Main, Heading, DataTable, Text } from 'grommet';
+import { Box, Button, Layer, Main, Heading, DataTable, Text } from 'grommet';
+import { CircleInformation } from 'grommet-icons';
+
+const decodeJWT = (encoded: string) => {
+  const parts = encoded.split('.');
+  //const header = decode(parts[0]);
+  const payload = decode(parts[1]);
+  const payloadData = JSON.parse(payload);
+  const payloadFriendly = JSON.stringify(payloadData, null, " ");
+  return payloadFriendly;
+}
+
 function Settings() {
+  const [show, setShow] = React.useState<boolean>();
 
   // Get all localStorage items with key 'oidc.user:*'
   const keys = Object.keys(localStorage);
@@ -57,6 +70,33 @@ function Settings() {
               return <Text>ID token expired</Text>;
             },
           },
+          {
+            property: 'actions',
+            header: <Text />,
+            primary: false,
+            render: datum => {
+              return (
+                <>
+                  <Button plain label={<CircleInformation/>} onClick={() => setShow(true)} />
+                  {show && (
+                    <Layer
+                      onEsc={() => setShow(false)}
+                      onClickOutside={() => setShow(false)}
+                      full={true}
+                      margin="small"
+                    >
+                      <Box direction="column" pad="medium" gap="small">
+                        <pre>
+                        {decodeJWT(datum.id_token)}
+                        </pre>
+                        <Button label="Close" onClick={() => setShow(false)} />
+                      </Box>
+                    </Layer>
+                  )}
+                </>
+              )
+            },
+          }
         ]}
         data={endpoints} />
     </Main>
