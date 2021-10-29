@@ -36,9 +36,9 @@ function Settings() {
 
   return (
     <Main pad="large">
-      <Heading margin="none">Settings</Heading>
+      <Heading margin={{vertical: "small"}} size="small">Settings</Heading>
 
-      <Heading margin="none" level="2" >Management API endpoints</Heading>
+      <Heading margin={{vertical: "medium"}} level="2" size="small">Management API endpoints</Heading>
 
       <DataTable
         columns={[
