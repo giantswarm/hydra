@@ -6,16 +6,19 @@ import Auth from './Auth';
 import Home from './Home';
 import Settings from './Settings';
 import reportWebVitals from './reportWebVitals';
+import EndpointManager from './auth/endpointManager';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+
+const em = new EndpointManager('fFlz7lckhWA0kIaW3fLIl8chFSs2wvW6');
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <App>
-        <Route path="/" exact component={Home} />
-        <Route path="/auth/" exact component={Auth} />
-        <Route path="/settings/" exact component={Settings} />
+        <Route path="/" exact><Home /></Route>
+        <Route path="/auth/" exact><Auth endpointManager={em} /></Route>
+        <Route path="/settings/" exact><Settings endpointManager={em} /></Route>
       </App>
     </Router>
   </React.StrictMode>,

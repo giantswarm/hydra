@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Auth from './auth/auth';
 import { User } from 'oidc-client';
+import EndpointManager from './auth/endpointManager';
 
 import { Box, Button, Form, TextInput } from 'grommet';
 
@@ -34,11 +35,16 @@ if (queryParams.get('code')) {
   }
 }
 
-function AuthComponent() {
+type AuthProps = {
+  endpointManager: EndpointManager;
+}
+
+function AuthComponent({ endpointManager }: AuthProps) {
   const [dexURL, setDexURL] = useState(defaultDexURL);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    endpointManager.addByIssuerURL(dexURL);
     handleAuthFlow(dexURL);
   };
 
